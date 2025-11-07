@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace Wasalnyy.DAL.Enum
 {
-	public enum RideStatus
+	public enum TripStatus
 	{
-		Pending = 0,
-		Accepted = 1,
-		Rejected = 2,
-		Cancelled = 3,
-		DriverWaiting = 4,
-		InProgress = 5,
-		Completed = 6
+		Requested,
+        Accepted,
+		Started,
+		Ended,
+        Cancelled
 	}
 }

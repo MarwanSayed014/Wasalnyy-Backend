@@ -11,6 +11,8 @@ namespace Wasalnyy.DAL.Database
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
+
+            builder.Entity<Review>().HasKey(x=> new { x.RiderId, x.DriverId, x.TripId, x.ReviewerType });
 		}
 
         public DbSet<User> Users {  get; set; }

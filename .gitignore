@@ -12,6 +12,7 @@ Wasalnyy.DAL/bin/
 Wasalnyy.DAL/obj/
 Wasalnyy.PL/bin/
 Wasalnyy.PL/obj/
+Wasalnyy.DAL/Migrations/
 
 # General bin/obj
 **/bin/

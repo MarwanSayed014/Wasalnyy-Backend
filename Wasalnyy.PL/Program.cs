@@ -22,9 +22,6 @@ namespace Wasalnyy.PL
 			builder.Services.AddDbContext<WasalnyyDbContext>(options =>
 	            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddDbContext<WasalnyyDbContext>(options =>
-            options.UseSqlServer(connectionString));
-           
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
              options =>
@@ -35,12 +32,12 @@ namespace Wasalnyy.PL
 
 
 
-            builder.Services.AddIdentityCore<WasalnyyDbContext>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
                             .AddEntityFrameworkStores<WasalnyyDbContext>()
-                            .AddTokenProvider<DataProtectorTokenProvider<Riders>>(TokenOptions.DefaultProvider);
+                            .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -56,7 +53,7 @@ namespace Wasalnyy.PL
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapHub<RideHub>("/ride");
+            app.MapHub<TripHub>("/ride");
 
 
             app.MapControllers();

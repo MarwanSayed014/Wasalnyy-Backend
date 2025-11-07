@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Wasalnyy.BLL.DTO.Trip;
+using Wasalnyy.DAL.Entities;
 
 namespace Wasalnyy.BLL.Service.Abstraction
 {
@@ -13,7 +14,8 @@ namespace Wasalnyy.BLL.Service.Abstraction
         delegate void TripDel(TripDto dto);
         event TripDel? TripRequested;
         event TripDel? TripAccepted;
-        event TripDel? TripDeleted;
+        event TripDel? TripStarted;
+        event TripDel? TripEnded;
         event TripDel? TripCanceled;
 
         Task<TripDto> GetByIdAsync(Guid id);

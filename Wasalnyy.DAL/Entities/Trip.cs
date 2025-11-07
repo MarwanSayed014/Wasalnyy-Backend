@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +12,14 @@ namespace Wasalnyy.DAL.Entities
 	{
 		public Guid Id { get; set; }
 		public PaymentMethod PaymentMethod { get; set; }
-		public RideStatus Status { get; set; } = RideStatus.Pending;
+		public TripStatus TripStatus { get; set; } = TripStatus.Requested;
 		public double Distance { get; set; }
 		public string Distination { get; set; }
 		public string PickupPoint { get; set; }
-		public double Price { get; set; }
+		public decimal Price { get; set; }
 
-		public DateTime Duration;
+		[NotMapped]
+		public double Duration { get =>  ArrivalDate.Subtract( StartDate).TotalMinutes;  }
 		public DateTime ArrivalDate { get; set; }
 		public DateTime StartDate { get; set; }
 		public double StartLat { get; set; }
