@@ -27,6 +27,7 @@
 			});
 			services.AddScoped<JwtHandler>();
 			services.AddScoped<IAuthService, AuthService>();
+			services.AddScoped<IEmailService, EmailService>();
 			return services;
         }
     }
