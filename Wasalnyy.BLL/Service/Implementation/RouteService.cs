@@ -21,7 +21,7 @@ namespace Wasalnyy.BLL.Service.Implementation
         public async Task<(double distanceKm, double durationMinutes)> CalculateDistanceAndDurationAsync(Coordinates start, Coordinates end)
         {
             var url = $"https://router.project-osrm.org/route/v1/driving/{start.Lng},{start.Lat};{end.Lng},{end.Lat}?overview=false";
-
+            
             var response = await _httpClient.GetStringAsync(url);
             var json = JsonDocument.Parse(response);
 

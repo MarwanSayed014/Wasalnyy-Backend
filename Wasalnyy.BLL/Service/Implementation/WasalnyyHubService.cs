@@ -1,21 +1,26 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wasalnyy.BLL.Exceptions;
+using Wasalnyy.DAL.Entities;
 using Wasalnyy.DAL.Repo.Abstraction;
 
 namespace Wasalnyy.BLL.Service.Implementation
 {
-    public class WasalnyyHubConnectionService : IWasalnyyHubConnectionService
+    public class WasalnyyHubService : IWasalnyyHubService
     {
         private readonly IWasalnyyHubConnectionRepo _repo;
+        private readonly UserManager<User> _userManager;
 
-        public WasalnyyHubConnectionService(IWasalnyyHubConnectionRepo repo)
+        public WasalnyyHubService(IWasalnyyHubConnectionRepo repo, UserManager<User> userManager)
         {
             _repo = repo;
+            _userManager = userManager;
         }
-        public async Task CreateAsync(WasalnyyHubConnection connection)
+        public async Task CreateConnectionAsync(WasalnyyHubConnection connection)
         {
             await _repo.CreateAsync(connection);
             await _repo.SaveChangesAsync();
@@ -27,7 +32,7 @@ namespace Wasalnyy.BLL.Service.Implementation
             await _repo.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string signalRConnectionId)
+        public async Task DeleteConnectionAsync(string signalRConnectionId)
         {
             await _repo.DeleteAsync(signalRConnectionId);
             await _repo.SaveChangesAsync();
@@ -42,6 +47,5 @@ namespace Wasalnyy.BLL.Service.Implementation
         {
             return await _repo.IsOnlineAsync(userId);
         }
-
     }
 }

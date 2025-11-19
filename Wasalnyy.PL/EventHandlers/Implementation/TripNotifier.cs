@@ -29,7 +29,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
 
         public async Task OnTripAccepted(TripDto dto)
         {
-            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
+            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubService>();
             var _driverService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDriverService>();
             var riderConIds = await _connectionService.GetAllUserConnectionsAsync(dto.RiderId);
             var driverConId = (await _connectionService.GetAllUserConnectionsAsync(dto.DriverId)).FirstOrDefault();
@@ -42,7 +42,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
                 {
                     await _hubContext.Groups.AddToGroupAsync(conId, $"trip_{dto.Id}");
 
-                    //ToDo Add Driver Cooridantes
+
                     await _hubContext.Clients.Client(conId).SendAsync("tripAccepeted", driver);
 
                 }
@@ -55,7 +55,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
 
         public async Task OnTripEnded(TripDto dto)
         {
-            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
+            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubService>();
             
             await _hubContext.Clients.Group($"trip_{dto.Id}").SendAsync("tripEnded", dto);
 

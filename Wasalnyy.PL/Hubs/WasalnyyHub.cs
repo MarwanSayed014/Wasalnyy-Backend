@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
+using Wasalnyy.BLL.Enents;
 
 namespace Wasalnyy.PL.Hubs
 {
     [Authorize(Roles = "Driver,Rider")]
     public class WasalnyyHub : Hub
     {
-        private readonly IWasalnyyHubConnectionService _connectionService;
-        public WasalnyyHub(IWasalnyyHubConnectionService connectionService)
+        private readonly WasalnyyHubEvents _hubEvents;
+        public WasalnyyHub(WasalnyyHubEvents hubEvents)
         {
-            _connectionService = connectionService;
+            _hubEvents = hubEvents;
         }
 
-        public override  Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
             var currentUserId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string conId = Context.ConnectionId;
@@ -21,18 +22,19 @@ namespace Wasalnyy.PL.Hubs
             if (string.IsNullOrEmpty(currentUserId) || string.IsNullOrEmpty(conId))
                 throw new UnauthorizedAccessException();
 
+            await base.OnConnectedAsync();
 
-             _connectionService.CreateAsync(new DAL.Entities.WasalnyyHubConnection { SignalRConnectionId = conId, UserId = currentUserId }).Wait();
-
-            return base.OnConnectedAsync();
+            await _hubEvents.FireUserConnectedAsync(currentUserId, conId);
         }
 
-        public override Task OnDisconnectedAsync(Exception? exception)
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
             string conId = Context.ConnectionId;
+
             if (!string.IsNullOrEmpty(conId))
-                _connectionService.DeleteAsync(conId).Wait();
-            return base.OnDisconnectedAsync(exception);
+                await _hubEvents.FireOnUserDisconnectedAsync(conId);
+
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

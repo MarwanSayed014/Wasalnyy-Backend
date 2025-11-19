@@ -56,6 +56,7 @@ namespace Wasalnyy.PL
             builder.Services.AddSingleton<IDriverNotifier, DriverNotifier>();
             builder.Services.AddSingleton<IRiderNotifier, RiderNotifier>();
             builder.Services.AddSingleton<ITripNotifier, TripNotifier>();
+            builder.Services.AddSingleton<IWasalnyyHubNotifier, WasalnyyHubNotifier>();
 
 
             builder.Services.AddBussinessInPL(builder.Configuration);
@@ -77,7 +78,7 @@ namespace Wasalnyy.PL
 
                 await DbSeeder.SeedAsync(userManager, roleManager);
                 
-                var connectionService = services.GetRequiredService<IWasalnyyHubConnectionService>();
+                var connectionService = services.GetRequiredService<IWasalnyyHubService>();
                 await connectionService.DeleteAllConnectionsAsync();
             }
 			// Configure the HTTP request pipeline.

@@ -26,7 +26,7 @@ namespace Wasalnyy.BLL.Common
             services.AddScoped<IPricingService, PricingService>();
             services.AddScoped<IRiderService, RiderService>();
             services.AddScoped<IRouteService, RouteService>();
-            services.AddScoped<IWasalnyyHubConnectionService, WasalnyyHubConnectionService>();
+            services.AddScoped<IWasalnyyHubService, WasalnyyHubService>();
 
             services.AddScoped<DriverServiceValidator>();
             services.AddScoped<TripServiceValidator>();
@@ -36,6 +36,7 @@ namespace Wasalnyy.BLL.Common
             services.AddSingleton<DriverEvents>();
             services.AddSingleton<RiderEvents>();
             services.AddSingleton<TripEvents>();
+            services.AddSingleton<WasalnyyHubEvents>();
 
 
 			services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
@@ -76,9 +77,11 @@ namespace Wasalnyy.BLL.Common
 
             var tripEvents = scope.ServiceProvider.GetRequiredService<TripEvents>();
             var driverEvents = scope.ServiceProvider.GetRequiredService<DriverEvents>();
+            var wasalnyyHubEvents = scope.ServiceProvider.GetRequiredService<WasalnyyHubEvents>();
 
             var tripHandler = scope.ServiceProvider.GetRequiredService<ITripNotifier>();
             var driverHandler = scope.ServiceProvider.GetRequiredService<IDriverNotifier>();
+            var wasalnyyHubHandler = scope.ServiceProvider.GetRequiredService<IWasalnyyHubNotifier>();
 
             tripEvents.TripRequested += tripHandler.OnTripRequested;
             tripEvents.TripAccepted += tripHandler.OnTripAccepted;
@@ -95,6 +98,10 @@ namespace Wasalnyy.BLL.Common
             driverEvents.DriverOutOfZone += driverHandler.OnDriverOutOfZone;
             driverEvents.DriverStatusChangedToOffline += driverHandler.OnDriverStatusChangedToOffline;
             //driverEvents.DriverStatusChangedToInTrip += driverHandler.OnDriverStatusChangedToInTrip;
+
+
+            wasalnyyHubEvents.UserConnected += wasalnyyHubHandler.OnUserConnected;
+            wasalnyyHubEvents.UserDisconnected += wasalnyyHubHandler.OnUserDisconnected;
 
             return app;
         }

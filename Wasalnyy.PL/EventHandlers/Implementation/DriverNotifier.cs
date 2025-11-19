@@ -28,7 +28,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
 
         public async Task OnDriverLocationUpdated(string driverId, Coordinates coordinates)
         {
-            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
+            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubService>();
 
             var conId = (await _connectionService.GetAllUserConnectionsAsync(driverId)).FirstOrDefault();
 
@@ -46,7 +46,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
 
         public async Task OnDriverStatusChangedToAvailable(string driverId, Guid zoneId)
         {
-            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
+            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubService>();
 
             var conId = (await _connectionService.GetAllUserConnectionsAsync(driverId)).FirstOrDefault();
 
@@ -65,7 +65,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
 
         public async Task OnDriverStatusChangedToOffline(string driverId)
         {
-            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
+            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubService>();
             var conId = (await _connectionService.GetAllUserConnectionsAsync(driverId)).FirstOrDefault();
 
             if (conId != null) 
@@ -75,14 +75,14 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
                 var driver = await _driverService.GetByIdAsync(driverId);
                 if (driver != null && driver.ZoneId != null)
                     await _hubContext.Groups.RemoveFromGroupAsync(conId, $"driversAvailableInZone_{driver.ZoneId}");
-                await _connectionService.DeleteAsync(conId);
+                await _connectionService.DeleteConnectionAsync(conId);
             }
 
         }
 
         public async Task OnDriverZoneChanged(string driverId, Guid? oldZoneId, Guid newZoneId)
         {
-            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
+            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubService>();
             var conId = (await _connectionService.GetAllUserConnectionsAsync(driverId)).FirstOrDefault();
 
 
@@ -105,7 +105,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
         }
         public async Task OnDriverOutOfZone(string driverId)
         {
-            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
+            var _connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubService>();
             var conId = (await _connectionService.GetAllUserConnectionsAsync(driverId)).FirstOrDefault();
 
             if(conId != null)
