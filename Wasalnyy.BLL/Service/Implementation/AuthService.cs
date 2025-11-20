@@ -84,7 +84,7 @@ namespace Wasalnyy.BLL.Service.Implementation
 
 			var token = await _userManager.GenerateEmailConfirmationTokenAsync(driver);
 			var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-			var confirmationLink = $"{BaseUrl}/api/auth/confirm-email?userId={driver.Id}&token={encodedToken}";
+			var confirmationLink = $"{BaseUrl}/api/Email/confirm-email?userId={driver.Id}&token={encodedToken}";
 			await _emailService.SendEmail(
 				driver.Email,
 				"Confirm your email",
@@ -95,19 +95,18 @@ namespace Wasalnyy.BLL.Service.Implementation
 			var jwt_token = await _jwtHandler.GenerateToken(driver);
 			return new AuthResult { Success = true, Message = "Driver registered successfully", Token = jwt_token, DriverId = driver.Id };
 		}
-
 		public async Task<AuthResult> RegisterRiderAsync(RegisterRiderDto dto)
 		{
-            var existingUser = await _userManager.FindByEmailAsync(dto.Email);
-            if (existingUser != null)
-            {
-                return new AuthResult
-                {
-                    Success = false,
-                    Message = "Email is already registered"
-                };
-            }
-            var rider = new Rider
+			var existingUser = await _userManager.FindByEmailAsync(dto.Email);
+			if (existingUser != null)
+			{
+				return new AuthResult
+				{
+					Success = false,
+					Message = "Email is already registered"
+				};
+			}
+			var rider = new Rider
 			{
 				UserName = dto.Email,
 				Email = dto.Email,
@@ -130,7 +129,7 @@ namespace Wasalnyy.BLL.Service.Implementation
 			// Generate email confirmation token
 			var token = await _userManager.GenerateEmailConfirmationTokenAsync(rider);
 			var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-			var confirmationLink = $"{BaseUrl}/api/auth/confirm-email?userId={rider.Id}&token={encodedToken}";
+			var confirmationLink = $"{BaseUrl}/api/Email/confirm-email?userId={rider.Id}&token={encodedToken}";
 			await _emailService.SendEmail(
 				rider.Email,
 				"WasalnyyUber App  ---- Confirm your email",
@@ -141,23 +140,6 @@ namespace Wasalnyy.BLL.Service.Implementation
 			var jwt_token = await _jwtHandler.GenerateToken(rider);
 
 			return new AuthResult { Success = true, Message = "Rider registered successfully", Token = jwt_token };
-		}
-		public async Task<AuthResult> ConfirmEmailAsync(string userId, string token)
-		{
-			if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
-				return new AuthResult { Success = false, Message = "Invalid email confirmation request" };
-
-			var user = await _userManager.FindByIdAsync(userId);
-			if (user == null)
-				return new AuthResult { Success = false, Message = "User not found" };
-
-			var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
-			var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
-
-			if (!result.Succeeded)
-				return new AuthResult { Success = false, Message = "Email confirmation failed" };
-
-			return new AuthResult { Success = true, Message = "Email confirmed successfully!" };
 		}
 		public async Task<AuthResult> LoginAsync(LoginDto dto, string? role = null)
 		{

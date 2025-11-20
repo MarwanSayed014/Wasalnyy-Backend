@@ -9,5 +9,6 @@ namespace Wasalnyy.BLL.Service.Abstraction
 	public interface IEmailService
 	{
 		Task SendEmail(string to, string subject, string htmlMessage);
+		Task<AuthResult> ConfirmEmailAsync(string userId, string token);
 	}
 }

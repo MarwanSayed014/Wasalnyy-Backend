@@ -20,22 +20,17 @@ namespace Wasalnyy.PL.Controllers
 		public async Task<IActionResult> Login([FromBody] LoginDto dto, [FromQuery] string? role)
 		{
 			var result = await _authService.LoginAsync(dto, role);
-
 			if (!result.Success)
 				return Unauthorized(result.Message);
-
 			return Ok(new { result.Message, result.Token });
 		}
 
 		[HttpPost("register/driver")]
 		public async Task<IActionResult> RegisterDriver([FromBody] RegisterDriverDto dto)
 		{
-			
 			var result = await _authService.RegisterDriverAsync(dto);
-
 			if (!result.Success)
 				return BadRequest(result);
-
 			return Ok(result);
 		}
 
@@ -43,22 +38,13 @@ namespace Wasalnyy.PL.Controllers
 		public async Task<IActionResult> RegisterRider([FromBody] RegisterRiderDto dto)
 		{
 			var result = await _authService.RegisterRiderAsync(dto);
-
 			if (!result.Success)
 				return BadRequest(result.Message);
-
 			return Ok(new { result.Message, result.Token });
 		}
-		[HttpGet("confirm-email")]
-		public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
-		{
-			var result = await _authService.ConfirmEmailAsync(userId, token);
 
-			if (!result.Success)
-				return BadRequest(result.Message);
 
-			return Ok(result.Message);
-		}
+		
 		[HttpPost("register/driver-face")]
         [Consumes("multipart/form-data")]
 
