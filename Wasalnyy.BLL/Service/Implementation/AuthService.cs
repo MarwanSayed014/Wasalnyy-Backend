@@ -227,5 +227,25 @@ namespace Wasalnyy.BLL.Service.Implementation
 			}
 			return new AuthResult { Success = false, Message = "Face not recognized" };
 		}
-	}
+        public async Task CreateWalletForUserAsync(User user)
+        {
+            // prevent admin from getting wallet
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
+                return;
+
+            // Check if wallet already exists
+            var existingWallet = await _walletRepo.GetByUserIdAsync(user.Id);
+            if (existingWallet != null)
+                return;
+
+            var wallet = new Wallet
+            {
+                UserId = user.Id,
+                Balance = 0,
+            };
+
+            await _walletRepo.CreateAsync(wallet);
+            await _walletRepo.SaveChangesAsync();
+        }
+    }
 }

@@ -10,7 +10,21 @@
 		{
 			base.OnModelCreating(builder);
 			builder.ApplyConfigurationsFromAssembly(typeof(WasalnyyDbContext).Assembly);
-		}
+
+            builder.Entity<Wallet>()
+               .HasOne(w => w.User)
+               .WithOne()                     // Rider or Driver (inherit from User)
+               .HasForeignKey<Wallet>(w => w.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<WalletTransaction>()
+                .HasOne(t => t.Wallet)
+                .WithMany(w => w.Transactions)
+                .HasForeignKey(t => t.WalletId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+        }
 
         public DbSet<User> Users {  get; set; }
         public DbSet<Rider> Riders {  get; set; }
@@ -20,6 +34,9 @@
         public DbSet<Trip> Trips {  get; set; }
         public DbSet<Zone> Zones {  get; set; }
 		public DbSet<UserFaceData> UserFaceData { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<WalletTransaction> WalletTransactions { get; set; }
+
 
     }
 }

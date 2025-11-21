@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Wasalnyy.BLL.Service.Abstraction
+{
+    public interface IWalletService
+    {
+        Task<Wallet?> GetWalletByUserIdAsync(string userId);
+
+        Task<bool> AddToWalletAsync(string userId, decimal amount, string? reference = null);
+        Task<bool> WithdrawFromWalletAsync(string userId, decimal amount, string? reference = null);
+
+        Task<bool> TransferAsync(string fromUserId, string toUserId, decimal amount, string? tripId = null);
+    }
+}

@@ -18,4 +18,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Wasalnyy.BLL.JwtHandling;
 global using Wasalnyy.BLL.Service.Implementation;
 global using Wasalnyy.BLL.DTO.Update;
+global using  Wasalnyy.DAL.Database;
+global using Wasalnyy.DAL.Repo.Abstraction;
 
