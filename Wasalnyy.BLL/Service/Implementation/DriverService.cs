@@ -136,6 +136,9 @@ namespace Wasalnyy.BLL.Service.Implementation
             if (driver == null)
                 throw new NotFoundException($"Driver with ID '{driverId}' was not found.");
 
+            if(driver.DriverStatus == DriverStatus.Available)
+                throw new AlreadyAvailableException($"Driver with ID '{driverId}' already available.");
+
             var _tripService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ITripService>();
             var activeTrip = await _tripService.GetDriverActiveTripAsync(driverId);
 

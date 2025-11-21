@@ -28,5 +28,6 @@ namespace Wasalnyy.BLL.Service.Abstraction
         Task AcceptTripAsync(string driverId, Guid tripId);
         Task StartTripAsync(string driverId, Guid tripId);
         Task EndTripAsync(string driverId, Guid tripId);
+        Task UpdateTripLocationAsync(Guid tripId, Coordinates coordinates);
     }
 }

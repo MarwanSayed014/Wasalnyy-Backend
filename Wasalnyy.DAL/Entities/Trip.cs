@@ -14,6 +14,7 @@
         public DateTime? ArrivalDate { get; set; }
 
 
+        public Coordinates? CurrentCoordinates { get; set; }
         public Coordinates PickupCoordinates { get; set; }
         public Coordinates DistinationCoordinates { get; set; }
 

@@ -21,9 +21,6 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
         {
             _hubContext = hubContext;
             _serviceScopeFactory = serviceScopeFactory;
-
-            //_connectionService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWasalnyyHubConnectionService>();
-            //_tripService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ITripService>();
         }
 
         public async Task OnDriverLocationUpdated(string driverId, Coordinates coordinates)
@@ -36,9 +33,18 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
             {
                 var _tripService = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ITripService>();
                 var trip = await _tripService.GetDriverActiveTripAsync(driverId);
+
                 if(trip != null)
                 {
-                    await _hubContext.Clients.Groups($"trip_{trip.Id}").SendAsync("tripLocationUpdated", coordinates);
+                    if(trip.TripStatus == TripStatus.Accepted)
+                    {
+                        await _hubContext.Clients.Groups($"trip_{trip.Id}").SendAsync("yourDriverLocationUpdated", coordinates);
+                    }
+                    else
+                    {
+                        await _tripService.UpdateTripLocationAsync(trip.Id, coordinates);
+                        await _hubContext.Clients.Groups($"trip_{trip.Id}").SendAsync("tripLocationUpdated", coordinates);
+                    }
                 }
             }
 
@@ -58,7 +64,7 @@ namespace Wasalnyy.PL.EventHandlers.Implementation
                 var tripsInZone = await _tripService.GetByRequestedTripsByZoneAsync(zoneId);
                 foreach (var trip in tripsInZone)
                 {
-                    await _hubContext.Clients.Client(conId).SendAsync("availableTripsInZone", tripsInZone);
+                    await _hubContext.Clients.Client(conId).SendAsync("availableTripsInZone", trip);
                 }
             }
         }

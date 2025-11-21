@@ -6,6 +6,20 @@
         {
             builder.HasKey(t => t.Id);
 
+
+            builder.OwnsOne(e => e.CurrentCoordinates, ownedNavigationBuilder =>
+            {
+                ownedNavigationBuilder.Property(c => c.Lat)
+                    .HasConversion<decimal>()
+                    .HasColumnName("CurrentLat")
+                    .IsRequired();
+
+                ownedNavigationBuilder.Property(c => c.Lng)
+                    .HasConversion<decimal>()
+                    .HasColumnName("CurrentLng")
+                    .IsRequired();
+            });
+
             builder.OwnsOne(e => e.PickupCoordinates, ownedNavigationBuilder =>
             {
                 ownedNavigationBuilder.Property(c => c.Lat)

@@ -112,5 +112,13 @@ namespace Wasalnyy.BLL.Validators
             if (pageSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be at least 1.");
         }
+
+        public void ValidateUpdateTripLocation(Guid tripId, Coordinates coordinates)
+        {
+            ArgumentNullException.ThrowIfNull(coordinates);
+
+            if (tripId == Guid.Empty)
+                throw new ArgumentException($"tripId '{tripId}' is empty");
+        }
     }
 }

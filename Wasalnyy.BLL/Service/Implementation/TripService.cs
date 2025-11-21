@@ -136,6 +136,9 @@ namespace Wasalnyy.BLL.Service.Implementation
 
             trip.TripStatus = TripStatus.Started;
             trip.StartDate = DateTime.UtcNow;
+
+            trip.CurrentCoordinates = driver.Coordinates;
+
             await _tripRepo.UpdateTripAsync(trip);
             await _tripRepo.SaveChangesAsync();
 
@@ -333,6 +336,23 @@ namespace Wasalnyy.BLL.Service.Implementation
             _validator.ValidateGetRiderActiveTrip(riderId);
 
             return _mapper.Map<Trip?, TripDto?>(await _tripRepo.GetRiderActiveTripAsync(riderId));
+        }
+
+        public async Task UpdateTripLocationAsync(Guid tripId, Coordinates coordinates)
+        {
+            _validator.ValidateUpdateTripLocation(tripId, coordinates);
+
+            var trip = await _tripRepo.GetByIdAsync(tripId);
+            if (trip == null)
+                throw new NotFoundException($"Trip with ID '{tripId}' was not found.");
+
+            if (trip.TripStatus != TripStatus.Started)
+                throw new InvalidOperationException($"Trip location cannot be updated.");
+
+            trip.CurrentCoordinates = coordinates;
+
+            await _tripRepo.UpdateTripAsync(trip);
+            await _tripRepo.SaveChangesAsync();
         }
     }
 }

@@ -13,6 +13,7 @@ using Wasalnyy.DAL.Database;
 using Wasalnyy.DAL.Entities;
 using Wasalnyy.PL.EventHandlers.Implementation;
 using Wasalnyy.PL.Hubs;
+using Wasalnyy.PL.Middleware;
 namespace Wasalnyy.PL
 {
     public class Program
@@ -92,6 +93,8 @@ namespace Wasalnyy.PL
             app.UseAuthorization();
 
             app.UseStaticFiles();
+            app.UseMiddleware<ExptionhandlingMiddleware>();
+
             app.MapHub<WasalnyyHub>("/Wasalnyy");
 
             app.MapControllers();

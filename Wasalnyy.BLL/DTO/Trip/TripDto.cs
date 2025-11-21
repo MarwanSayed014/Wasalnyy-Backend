@@ -17,6 +17,7 @@ namespace Wasalnyy.BLL.DTO.Trip
         public DateTime RequestedDate { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? ArrivalDate { get; set; }
+        public Coordinates? CurrentCoordinates { get; set; }
         public Coordinates PickupCoordinates { get; set; }
         public Coordinates DistinationCoordinates { get; set; }
         public string? DriverId { get; set; }

@@ -25,20 +25,12 @@ namespace Wasalnyy.PL.Controllers
         [HttpPost("SetAsAvailable")]
         public async Task<IActionResult> SetAsAvailableAsync([FromBody] Coordinates coordinate)
         {
-            try
-            {
-                var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                if (driverId == null)
-                    return Unauthorized();
+            if (driverId == null)
+                return Unauthorized();
 
-                await _driverService.SetDriverAvailableAsync(driverId, coordinate);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                Ok();
-            }
+            await _driverService.SetDriverAvailableAsync(driverId, coordinate);
             return Ok();
 
         }
@@ -46,21 +38,13 @@ namespace Wasalnyy.PL.Controllers
         [HttpPost("UpdateLocation")]
         public async Task<IActionResult> UpdateLocationAsync([FromBody] Coordinates coordinate)
         {
-            try
-            {
-                var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                if (driverId == null)
-                    return Unauthorized();
+            if (driverId == null)
+                return Unauthorized();
 
-                await _driverService.UpdateLocationAsync(driverId, coordinate);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return Ok();
-
-            }
+            await _driverService.UpdateLocationAsync(driverId, coordinate);
+            return Ok();
 
         }
 
