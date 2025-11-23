@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Wasalnyy.DAL.Database;
 using Wasalnyy.DAL.Repo.Abstraction;
@@ -50,7 +52,6 @@ namespace Wasalnyy.DAL.Repo.Implementation
         public async Task UpdateWalletAsync(Wallet wallet)
         {
             _context.Entry(wallet).State = EntityState.Modified;
-           
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -58,6 +59,9 @@ namespace Wasalnyy.DAL.Repo.Implementation
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-       
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
+        }
     }
 }

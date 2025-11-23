@@ -41,13 +41,16 @@ namespace Wasalnyy.API.Controllers
             if (dto.TripId == Guid.Empty)
                 return BadRequest("TripId is required.");
 
-            var result = await _walletService.TransferMoneyFromRiderToDriver(dto);
+            var result = await _walletService.HandleTransferWalletMoneyFromRiderToDriver(dto);
 
             if (result.IsSuccess==false)
                 return BadRequest("Transfer failed "+result.Message);
 
             return Ok(result.Message);
         }
+
+
+
 
         // GET: api/wallet/user/{userId}
         //[HttpGet("user/{userId}")]

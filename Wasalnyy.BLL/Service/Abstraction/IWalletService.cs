@@ -12,13 +12,13 @@ namespace Wasalnyy.BLL.Service.Abstraction
         //4of deh ya mahmoud sameh mo4 3ayzha 
         Task<Wallet?> GetWalletByUserIdAsync(string userId);
 
-        Task<IncreaseWalletBalanceResponse> IncreaseWalletAsync(string userId, decimal amount);
+        Task<IncreaseWalletBalanceResponse> IncreaseWalletAsync(string userId, decimal amount,DateTime dateTime);
 
         // w deh mo4 3ayhza 
         //Task<bool> WithdrawFromWalletAsync(string userId, decimal amount, string? reference = null);
     
 
-        Task<TransferWalletResponse> TransferMoneyFromRiderToDriver(TransferMoneyBetweenUsersDTO transferDto);
+        Task<TransferWalletResponse> HandleTransferWalletMoneyFromRiderToDriver(TransferMoneyBetweenUsersDTO transferDto);
 
         //w deh mo4 3ayzha
         // Task<bool> TransferAsync(string fromUserId, string toUserId, decimal amount, string? tripId = null);

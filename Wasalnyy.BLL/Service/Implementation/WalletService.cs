@@ -5,6 +5,7 @@ using Wasalnyy.BLL.Service.Abstraction;
 using Wasalnyy.DAL.Database;
 using Wasalnyy.DAL.Entities;
 using Wasalnyy.DAL.Repo.Abstraction;
+using Wasalnyy.DAL.Repo.Implementation;
 namespace Wasalnyy.BLL.Service.Implementation
 {
     public class WalletService : IWalletService
@@ -49,8 +50,9 @@ namespace Wasalnyy.BLL.Service.Implementation
         //   ADD MONEY TO WALLET
         // ============================================================
 
-        public async Task<IncreaseWalletBalanceResponse> IncreaseWalletAsync(string userId, decimal amount)
+        public async Task<IncreaseWalletBalanceResponse> IncreaseWalletAsync(string userId, decimal amount,DateTime dateTime)
         {
+
 
             if (amount <= 0)
                 return new IncreaseWalletBalanceResponse(false ,"Amount of money cant be negative or zero");
@@ -62,17 +64,11 @@ namespace Wasalnyy.BLL.Service.Implementation
                 if (wallet == null)
                     return new IncreaseWalletBalanceResponse(false, "This User doesnt have Wallet Call Dev to make sure Rider or driver User have wallet created");
                 wallet.Balance += amount;
-                wallet.ModifiedAt = DateTime.Now;
+                wallet.ModifiedAt = dateTime;
                 await _walletRepo.UpdateWalletAsync(wallet);
-                //await walletTransactionRepo.CreateAsync(new WalletTransactionLogs
-                //{
-                //    WalletId = wallet.Id,
-                //    Amount = amount,
-                //    TransactionType = DAL.Enum.WalletTransactionType.Credit,
-                //    Description = $"user charge his wallet by {amount}",
-                //    CreatedAt = DateTime.Now
+               
+                return new IncreaseWalletBalanceResponse(true, "Wallet balance increased successfully");
 
-                //});
             }
             catch (Exception ex)
             {
@@ -82,30 +78,15 @@ namespace Wasalnyy.BLL.Service.Implementation
 
          
 
-            return new IncreaseWalletBalanceResponse(true, "Wallet balance increased successfully");
-            //var log = new WalletTransaction
-            //{
-            //    WalletId = wallet.Id,
-            //    Amount = amount,
-            //    TransactionType = WalletTransactionType.Credit,
-            //    Description = reference ?? "Wallet Top-Up",
-            //    CreatedAt = DateTime.UtcNow
-            //};
-
-            //await _transactionRepo.CreateAsync(log);
-
-            //await _walletRepo.SaveChangesAsync();
-            //await _transactionRepo.SaveChangesAsync();
-
-            //return true;
+           
         }
 
-        public async Task<TransferWalletResponse> TransferMoneyFromRiderToDriver(TransferMoneyBetweenUsersDTO transferDto)
+        public async Task<TransferWalletResponse> HandleTransferWalletMoneyFromRiderToDriver(TransferMoneyBetweenUsersDTO transferDto)
         {
 
             // w kman el ergistration w create wallet w leh fl json byb2a maktob dommy data s7 ? w kman el log fl increase wallet balance w 4of mwdo3 el context ely mwgod fl sevice deh 
             //w mwdoo3 ek data an ha5liha fl transefer yb3to el date  w t4of el 7agat el zyada btat3 mahmoud  test insert transaction beacuse of id trip
-            // w 7laya enk mynf34 tndah 3la repo enta tendah 3la service
+            // w 7laya enk mynf34 tndah 3la repo enta tendah 3la service 23ml increas wallet balance dto
 
 
             
