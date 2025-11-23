@@ -16,7 +16,7 @@ namespace Wasalnyy.BLL.DTO.Wallet
         public decimal Balance { get; set; } = 0;
 
         // Timestamps
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
 
     }
