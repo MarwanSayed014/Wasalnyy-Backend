@@ -19,12 +19,14 @@ namespace Wasalnyy.DAL.Repo.Implementation
 
         public async Task AddAsync(WalletMoneyTransfer transfer)
         {
+            transfer.Id = Guid.NewGuid();
             await _context.Set<WalletMoneyTransfer>().AddAsync(transfer);
         }
 
-        public async Task SaveChangesAsync()
+       
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

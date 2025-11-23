@@ -9,6 +9,7 @@ namespace Wasalnyy.DAL.Repo.Abstraction
     public interface IWalletMoneyTransfersRepo
     {
         public Task AddAsync(WalletMoneyTransfer transfer);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     }
 }

@@ -14,24 +14,24 @@ namespace Wasalnyy.BLL.Service.Implementation
         private readonly IWalletTransactionRepo _transactionRepo;
         private readonly WasalnyyDbContext _context;
         private readonly IMapper _mapper;
-        private readonly ITripRepo tripRepo;
+        private readonly ITripService tripService;
         private readonly IWalletTransactionRepo walletTransactionRepo;
-        private readonly IWalletMoneyTransfersRepo walletMoneyTransfersRepo;
+        private readonly IWalletMoneyTransfersService WalletMoneyTransfersService;
         private readonly RiderService riderService;
         private readonly DriverService driverService;
         public WalletService(
             IWalletRepo walletRepo,
             IWalletTransactionRepo transactionRepo,
-            WasalnyyDbContext context, IMapper mapper,ITripRepo tripRepo, IWalletTransactionRepo walletTransactionRepo,IWalletMoneyTransfersRepo walletMoneyTransfersRepo
-            ,RiderService riderService ,DriverService driverService)
+            WasalnyyDbContext context, IMapper mapper,ITripService tripService, IWalletTransactionRepo walletTransactionRepo, IWalletMoneyTransfersService WalletMoneyTransfersService
+            , RiderService riderService ,DriverService driverService)
         {
             _walletRepo = walletRepo;
             _transactionRepo = transactionRepo;
             _context = context;
             _mapper = mapper;
-            this.tripRepo=tripRepo;
+            this.tripService = tripService;
             this.walletTransactionRepo= walletTransactionRepo;
-            this.walletMoneyTransfersRepo= walletMoneyTransfersRepo;
+            this.WalletMoneyTransfersService = WalletMoneyTransfersService;
             this.riderService= riderService;
             this.driverService= driverService;
         }
@@ -85,9 +85,7 @@ namespace Wasalnyy.BLL.Service.Implementation
         {
 
             // w kman el ergistration w create wallet 
-            //  w t4of el 7agat el zyada btat3 mahmoud 
-            // w 7laya enk mynf34 tndah 3la repo enta tendah 3la service 23ml increas wallet balance dto
-
+            // w 7laya enk mynf34 tndah 3la repo enta tendah 3la service 
             
 
 
@@ -118,8 +116,10 @@ namespace Wasalnyy.BLL.Service.Implementation
                     return new TransferWalletResponse(false, "Insufficient balance");
 
                 // //3-check if the trip id is exist or not 
-                await tripRepo.GetByIdAsync(transferDto.TripId);
-                if (tripRepo == null)
+
+                
+              var trip=  await tripService.GetByIdAsync(transferDto.TripId);
+                if (trip == null)
                     return new TransferWalletResponse(false, "Trip not found ");
 
                 // 5- update balances and update Lasttimeupdatedate date 
@@ -158,10 +158,10 @@ namespace Wasalnyy.BLL.Service.Implementation
 
                 //7-insert this transfer transaction in the transferTransaction table
 
-                await walletMoneyTransfersRepo.AddAsync(new DAL.Entities.WalletMoneyTransfer
+
+                await WalletMoneyTransfersService.AddAsync(new AddWalletTranferMoneyDTO
                 {
 
-                    Id = Guid.NewGuid(),
                     CreatedAt = transferDto.CreatedAt,
                     Amount = transferDto.Amount,
                     SenderWalletId = riderWallet.Id,

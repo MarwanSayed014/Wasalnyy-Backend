@@ -20,20 +20,23 @@ namespace Wasalnyy.BLL.Common
 
             services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
 
+            services.AddScoped<IWalletMoneyTransfersService, WalletMoneyTransfersService>();
 
-            
+
 
             //Payment and wallet
             services.AddScoped<IPaymentGetwayRepo, PaymentGetwayRepo>();
-            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentService, paymentGetway>();
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IWalletTransactionRepo, WalletTransactionRepo>();
             services.AddScoped<RiderService>(); // Or AddTransient/AddSingleton as needed
             services.AddScoped<IWalletService, WalletService>();
-            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentService, paymentGetway>();
             services.AddScoped<DriverService>(); // or AddTransient/AddSingleton
             services.AddScoped<IWalletService, WalletService>();
-            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentService, paymentGetway>();
+            services.AddScoped<IWalletMoneyTransfersService, WalletMoneyTransfersService>();
+
 
             services.AddScoped<IWalletMoneyTransfersRepo, WalletMoneyTransfersRepo>();
             // Register services
@@ -45,7 +48,7 @@ namespace Wasalnyy.BLL.Common
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<IWasalnyyHubService, WasalnyyHubService>();
             services.AddScoped<IAdminService, AdminService>();
-            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentService, paymentGetway>();
             services.AddScoped<IPasswordService, PasswordService>();
 
             services.AddScoped<DriverServiceValidator>();
