@@ -94,5 +94,12 @@
             return Ok();
         }
 
-    }
+		[HttpGet("AllActiveTrips")]
+        [Authorize(Roles ="Admin")]
+		public async Task<IActionResult> GetActiveTrips()
+		{
+			var trips = await _tripService.GetAllActiveTripsAsync();
+			return Ok(trips);
+		}
+	}
 }

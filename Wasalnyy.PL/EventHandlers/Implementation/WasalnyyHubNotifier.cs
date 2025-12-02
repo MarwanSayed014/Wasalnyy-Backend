@@ -62,8 +62,18 @@
                 }
                 return;
             }
+            else if (roles.Contains("Admin"))
+            {
+                await _connectionService.CreateConnectionAsync(new WasalnyyHubConnection
+                {
+                    SignalRConnectionId = connectionId,
+                    UserId = userId
+                });
+                await _hubContext.Groups.AddToGroupAsync(connectionId, "Admins");
+                return;
+            }
 
-            throw new UnauthorizedAccessException();            
+                throw new UnauthorizedAccessException();            
         }
         public async Task OnUserDisconnected(string connectionId)
         {
@@ -89,8 +99,11 @@
                 if(driver != null && driver.DriverStatus == DriverStatus.Available.ToString())
                     await _driverService.SetDriverUnAvailableAsync(userId);
             }
-
-            await _connectionService.DeleteConnectionAsync(connectionId);
+			if (roles.Contains("Admin"))
+			{
+				await _hubContext.Groups.RemoveFromGroupAsync(connectionId, "Admins");
+			}
+			await _connectionService.DeleteConnectionAsync(connectionId);
 
         }
     }

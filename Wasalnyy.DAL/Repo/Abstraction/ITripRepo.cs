@@ -16,8 +16,8 @@
         Task CreateTripAsync(Trip trip);
         Task UpdateTripAsync(Trip trip);
         Task DeleteAsync(Guid id);
-
-        Task<int> GetCountAsync();
+		IQueryable<Trip> GetAllTrips();
+		Task<int> GetCountAsync();
         Task<int> GetRiderTripsCountAsync(string riderId);
         Task<int> GetDriverTripsCountAsync(string driverId);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

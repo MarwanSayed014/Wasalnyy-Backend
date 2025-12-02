@@ -1,6 +1,6 @@
 ﻿namespace Wasalnyy.PL.Hubs
 {
-    [Authorize(Roles = "Driver,Rider")]
+    [Authorize(Roles = "Driver,Rider,Admin")]
     public class WasalnyyHub : Hub
     {
         private readonly WasalnyyHubEvents _hubEvents;
