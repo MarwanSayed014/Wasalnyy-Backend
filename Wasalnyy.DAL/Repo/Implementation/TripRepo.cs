@@ -1,4 +1,5 @@
-﻿namespace Wasalnyy.DAL.Repo.Implementation
+﻿
+namespace Wasalnyy.DAL.Repo.Implementation
 {
     public class TripRepo : ITripRepo
     {
@@ -131,5 +132,10 @@
                 .Include(t => t.Rider)
                 .ToListAsync();
         }
-    }
+
+		public IQueryable<Trip> GetAllTrips()
+		{
+            return _context.Trips.AsQueryable();
+		}
+	}
 }
