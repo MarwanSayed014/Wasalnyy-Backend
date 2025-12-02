@@ -15,7 +15,7 @@
         }
 
 
-
+        [ServiceFilter(typeof(WasalnyyOnlineActionFilter))]
         [HttpPost("SetAsAvailable")]
         public async Task<IActionResult> SetAsAvailableAsync([FromBody] Coordinates coordinate)
         {
@@ -26,6 +26,7 @@
             return Ok();
         }
 
+        [ServiceFilter(typeof(WasalnyyOnlineActionFilter))]
         [HttpPost("SetAsUnAvailable")]
         public async Task<IActionResult> SetAsUnAvailableAsync()
         {
@@ -39,6 +40,7 @@
 
         }
 
+        [ServiceFilter(typeof(WasalnyyOnlineActionFilter))]
         [HttpPost("UpdateLocation")]
         public async Task<IActionResult> UpdateLocationAsync([FromBody] Coordinates coordinate)
         {
@@ -49,37 +51,30 @@
             return Ok();
         }
 
-        [HttpPost("AcceptTrip")]
-        public async Task<IActionResult> AcceptTripAsync([FromBody] Guid tripId)
+        [HttpGet("TripsHistory")]
+        public async Task<IActionResult> GetTripsHistoryAsync(
+            [FromQuery] string orderBy = "RequestedDate",
+            [FromQuery] bool descending = false,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (driverId == null) return Unauthorized();
 
-            await _tripService.AcceptTripAsync(driverId, tripId);
-            return Ok();
+            Expression<Func<Trip, object>> orderByExpression = orderByExpression => orderByExpression.RequestedDate;
+            orderBy = orderBy.ToLower();
+
+            if (string.Equals(orderBy, "StartDate".ToLower()))
+                orderByExpression = orderByExpression => orderByExpression.StartDate!;
+
+            if (string.Equals(orderBy, "ArrivalDate".ToLower()))
+                orderByExpression = orderByExpression => orderByExpression.ArrivalDate!;
+
+            if (string.Equals(orderBy, "Price".ToLower()))
+                orderByExpression = orderByExpression => orderByExpression.Price;
+
+            return Ok(await _tripService.GetAllDriverTripsPaginatedAsync(driverId, orderByExpression, descending, pageNumber, pageSize));
         }
-
-        [HttpPost("StartTrip")]
-        public async Task<IActionResult> StartTripAsync([FromBody] Guid tripId)
-        {
-            var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (driverId == null) return Unauthorized();
-
-            await _tripService.StartTripAsync(driverId, tripId);
-            return Ok();
-        }
-
-        [HttpPost("EndTrip")]
-        public async Task<IActionResult> EndTripAsync([FromBody] Guid tripId)
-        {
-            var driverId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (driverId == null) return Unauthorized();
-
-            await _tripService.EndTripAsync(driverId, tripId);
-            return Ok();
-        }
-
-
 
         [HttpPut("UpdateInfo")]
         public async Task<IActionResult> UpdateDriverAsync([FromBody] DriverUpdateDto driverUpdate)
@@ -96,8 +91,6 @@
 
             return Ok(new { Message = "Driver information updated successfully." });
         }
-
-
 
         [HttpGet("Vehicle")]
         public async Task<IActionResult> GetVehicleInfoAsync()

@@ -27,7 +27,7 @@ global using System.Collections;
 global using AutoMapper;
 global using Wasalnyy.BLL.DTO;
 global using Wasalnyy.BLL.DTO.Driver;
-global using Wasalnyy.BLL.Enents;
+global using Wasalnyy.BLL.Events;
 global using Wasalnyy.BLL.Exceptions;
 global using Wasalnyy.BLL.Validators;
 global using System.Linq.Expressions;

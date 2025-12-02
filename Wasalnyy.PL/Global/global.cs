@@ -20,6 +20,7 @@ global using Microsoft.AspNetCore.Identity;
 global using Wasalnyy.BLL.Exceptions;
 global using System.Data;
 global using Microsoft.AspNetCore.Mvc.Filters;
-global using Wasalnyy.BLL.Enents;
+global using Wasalnyy.BLL.Events;
 global using System.Text.Json;
 
+global using System.Linq.Expressions;

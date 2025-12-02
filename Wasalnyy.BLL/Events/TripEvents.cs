@@ -1,4 +1,4 @@
-﻿namespace Wasalnyy.BLL.Enents
+﻿namespace Wasalnyy.BLL.Events
 {
     public class TripEvents
     {

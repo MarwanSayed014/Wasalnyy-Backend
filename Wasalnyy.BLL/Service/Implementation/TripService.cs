@@ -1,5 +1,6 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Wasalnyy.BLL.Events;
 
 namespace Wasalnyy.BLL.Service.Implementation
 {

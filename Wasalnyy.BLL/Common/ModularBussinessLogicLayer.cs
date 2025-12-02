@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Wasalnyy.BLL.Events;
 using Wasalnyy.BLL.Providers.Implementation;
 
 namespace Wasalnyy.BLL.Common

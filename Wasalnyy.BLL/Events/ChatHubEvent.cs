@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wasalnyy.BLL.Enents
+namespace Wasalnyy.BLL.Events
 {
 
     public class ChatHubEvent

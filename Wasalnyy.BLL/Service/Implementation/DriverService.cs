@@ -1,4 +1,6 @@
-﻿namespace Wasalnyy.BLL.Service.Implementation
+﻿using Wasalnyy.BLL.Events;
+
+namespace Wasalnyy.BLL.Service.Implementation
 {
     public class DriverService : IDriverService
     {
