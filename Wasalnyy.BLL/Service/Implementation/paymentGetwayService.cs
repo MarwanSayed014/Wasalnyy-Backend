@@ -141,7 +141,6 @@ namespace Wasalnyy.BLL.Service.Implementation
         private async Task<RiderPaymentSuccessResponse> HandleFailedPaymentAsync(RiderPaymentDetailsDTO paymentDetails)
         {
             var paymentEntity = _mapper.Map<GatewayPaymentTransactions>(paymentDetails);
-            //save payment transaction in payment getway table as failed
             try
             {
                 await paymentGetwayRepo.AddPaymentAsync(paymentEntity);

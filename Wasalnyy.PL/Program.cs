@@ -127,5 +127,4 @@ namespace Wasalnyy.PL
 	}
 
         }
-    }
-}
+    
