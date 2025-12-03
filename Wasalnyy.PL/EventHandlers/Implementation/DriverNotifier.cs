@@ -69,7 +69,7 @@
                 var driver = await _driverService.GetByIdAsync(driverId);
                 if (driver != null && driver.ZoneId != null)
                     await _hubContext.Groups.RemoveFromGroupAsync(conId, $"driversAvailableInZone_{driver.ZoneId}");
-                await _connectionService.DeleteConnectionAsync(conId);
+                
             }
 
         }
