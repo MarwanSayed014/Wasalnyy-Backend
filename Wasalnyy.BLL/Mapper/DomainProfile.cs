@@ -93,9 +93,10 @@ namespace Wasalnyy.BLL.Mapper
             CreateMap<Review, ReturnReviewDto>()
     .ForAllMembers(opt => opt.Condition((src, dest, value) => value != null));
 
-            CreateMap<CreateComplaintDto, Complaint>().ForAllMembers(opt => opt.Condition((src, dest, value) => value != null));
-            CreateMap<UpdateComplaintStatusDto, Complaint>().ForAllMembers(opt => opt.Condition((src, dest, value) => value != null));
-            CreateMap<ReturnComplaintDto, Complaint>();
+            CreateMap<CreateComplaintDto, Complaint>();           
+            CreateMap<UpdateComplaintStatusDto, Complaint>();     
+            CreateMap<Complaint, ReturnComplaintDto>();          
+            CreateMap<Complaint, UserReturnedComplain>();        
             CreateMap<ReviewStatistics, ReviewStatisticsDto>();
 
         }

@@ -11,7 +11,7 @@ namespace Wasalnyy.BLL.Service.Abstraction
         
         Task<Guid> AddComplaintAsync(CreateComplaintDto dto, string currentUserId);
         Task<IEnumerable<ReturnComplaintDto>> GetComplaintsAgainstUserAsync(string userId);
-        Task<IEnumerable<ReturnComplaintDto>> GetComplaintsByUserAsync(string userId);
+        Task<IEnumerable<UserReturnedComplain>> GetComplaintsByUserAsync(string userId);
         Task<IEnumerable<ReturnComplaintDto>> GetCriticalComplaintsAsync(string userId);
         Task<IEnumerable<ReturnComplaintDto>> GetNonCriticalComplaintsAsync(string userId);
         Task<ReturnComplaintDto> GetComplaintByIdAsync(Guid complaintId);
@@ -21,5 +21,6 @@ namespace Wasalnyy.BLL.Service.Abstraction
         string GetBanReason(UserComplaintStatistics stats);
         string GetWarningMessage(UserComplaintStatistics stats);
         Task UpdateComplaintStatusAsync(Guid complaintId, ComplaintStatus status);
+       
     }
 }

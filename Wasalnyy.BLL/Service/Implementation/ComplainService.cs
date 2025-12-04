@@ -87,7 +87,9 @@ namespace Wasalnyy.BLL.Service.Implementation
             return complaint.Id;
         }
 
-        
+      
+
+
         public async Task<IEnumerable<ReturnComplaintDto>> GetComplaintsAgainstUserAsync(string userId)
         {
             if (string.IsNullOrEmpty(userId))
@@ -98,13 +100,13 @@ namespace Wasalnyy.BLL.Service.Implementation
         }
 
       
-        public async Task<IEnumerable<ReturnComplaintDto>> GetComplaintsByUserAsync(string userId)
+        public async Task<IEnumerable<UserReturnedComplain>> GetComplaintsByUserAsync(string userId)
         {
             if (string.IsNullOrEmpty(userId))
                 throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty");
 
             var complaints = await _complaintRepo.GetComplaintsByUserAsync(userId);
-            return _mapper.Map<IEnumerable<ReturnComplaintDto>>(complaints);
+            return _mapper.Map<IEnumerable<UserReturnedComplain>>(complaints);
         }
 
         
@@ -140,7 +142,7 @@ namespace Wasalnyy.BLL.Service.Implementation
             return _mapper.Map<ReturnComplaintDto>(complaint);
         }
 
-        //  COMPLAINT STATISTICS & BAN LOGIC 
+        // statics /ban
 
        
         public async Task<ComplaintStatisticsDto> GetComplaintStatisticsAsync(string userId)
@@ -256,5 +258,7 @@ namespace Wasalnyy.BLL.Service.Implementation
             // If driver is complaining, complaint is against rider
             return tripDto.RiderId;
         }
+
+       
     }
 }

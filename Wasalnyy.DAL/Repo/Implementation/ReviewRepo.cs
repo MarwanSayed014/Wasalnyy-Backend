@@ -26,25 +26,25 @@ namespace Wasalnyy.DAL.Repo.Implementation
             await _context.Reviews.AddAsync(review);
         }
 
-      
+
         public async Task<double> GetDriverAverageRatingAsync(string driverId)
         {
             if (string.IsNullOrEmpty(driverId))
-                throw new ArgumentNullException(nameof(driverId), "Driver ID cannot be null or empty");
+                throw new ArgumentNullException("no driver found");
 
-            
             var rating = await _context.Reviews
                 .Where(e => e.DriverId == driverId && e.ReviewerType == ReviewerType.Rider)
                 .OrderByDescending(e => e.CreatedAt)
-                .Take(500)  
-                .AverageAsync(e => e.Stars);
+                .Take(500)
+                .Select(r => (double?)r.Stars)  
+                .AverageAsync();
 
-            return rating;
+            return rating ?? 0;
         }
 
-        
-       
-        
+
+
+
         public async Task<IEnumerable<Review>> GetDriverReviewsAsync(string driverId)
         {
             if (string.IsNullOrEmpty(driverId))

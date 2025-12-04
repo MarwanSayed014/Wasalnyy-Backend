@@ -23,7 +23,6 @@ namespace Wasalnyy.PL.Controllers
             _complaintService = complaintService;
         }
 
-        
         private string GetCurrentUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -205,7 +204,7 @@ namespace Wasalnyy.PL.Controllers
 
     
         [HttpPut("{complaintId:guid}/status")]
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> UpdateComplaintStatus(Guid complaintId, [FromBody] UpdateComplaintStatusDto dto)
         {
             if (complaintId == Guid.Empty)
@@ -224,6 +223,7 @@ namespace Wasalnyy.PL.Controllers
                 return NotFound("Complaint not found");
             }
         }
+        
     }
 
   

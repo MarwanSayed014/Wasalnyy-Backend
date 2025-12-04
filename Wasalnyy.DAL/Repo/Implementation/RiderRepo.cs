@@ -49,9 +49,16 @@ namespace Wasalnyy.DAL.Repo.Implementation
         }
         public async Task<IEnumerable<Complaint>> GetRiderComplainsByPhone(string phone)
         {
-            var rider= await _context.Riders.FirstOrDefaultAsync(p=>p.PhoneNumber==phone);
-            return await _context.Complaints.Include(t => t.SubmittedById == rider.Id).AsNoTracking().ToListAsync();
+            var rider = await _context.Riders
+                .FirstOrDefaultAsync(p => p.PhoneNumber == phone);
 
+            if (rider == null)
+                return Enumerable.Empty<Complaint>();
+
+            return await _context.Complaints
+                .Where(c => c.SubmittedById == rider.Id)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task UpdateRiderAsync(Rider rider)

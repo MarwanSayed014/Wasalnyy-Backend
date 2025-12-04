@@ -26,7 +26,7 @@ namespace Wasalnyy.DAL.Repo.Implementation
             await _db.Complaints.AddAsync(complaint);
         }
 
-       
+
         public async Task<Complaint> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
